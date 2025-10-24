@@ -1,0 +1,26 @@
+# Fungsi kustom untuk mencatat perintah dan menggabungkan outputnya ke file
+IO_Check() {
+    # Memeriksa apakah dua argumen (perintah dan file) diberikan
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        echo "Usage: IO_Check \"<command>\" <output_file>"
+        echo "Example: IO_Check \"neofetch\" log.txt"
+        return 1
+    fi
+
+    local COMMAND="$1"
+    local OUTPUT_FILE="$2"
+
+    echo "==========================================================" >> "$OUTPUT_FILE"
+    echo "[$COMMAND] [$(date '+%Y-%m-%d %H:%M:%S')]" >> "$OUTPUT_FILE"
+    echo "----------------------------------------------------------" >> "$OUTPUT_FILE"
+
+    # Jalankan perintah dan APPEND outputnya ke file
+    if $COMMAND >> "$OUTPUT_FILE" 2>&1; then
+        echo "✔ Command executed successfully." >> "$OUTPUT_FILE"
+    else
+        echo "✖ Command failed. Check errors above." >> "$OUTPUT_FILE"
+    fi
+
+    echo "==========================================================" >> "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+}
